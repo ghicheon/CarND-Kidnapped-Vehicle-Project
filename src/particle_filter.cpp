@@ -163,11 +163,15 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
             {
                 Map::single_landmark_s    mark = map_landmarks.landmark_list[k] ;
 
-                double d = dist( xm , ym , mark.x_f ,mark.y_f );
-                if( d < min )
+                //if this landmark is beyond the sensor range , ignore it.
+                if( ((xp - mark.x_f)*(xp - mark.x_f) + (yp - mark.y_f)*(yp - mark.y_f)) < sensor_range*sensor_range)
                 {
-                    min = d;
-                    closest_mark = k;
+                    double d = dist( xm , ym , mark.x_f ,mark.y_f );
+                    if( d < min )
+                    {
+                        min = d;
+                        closest_mark = k;
+                    }
                 }
             }
 
